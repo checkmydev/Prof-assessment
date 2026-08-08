@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Évaluation des professeurs</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="logo">🎓</span> Évaluation des profs</a>
+    <nav class="site-nav">
+      <a href="index.html" class="active">Évaluer</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Bienvenue 👋</h1>
+      <p class="subtitle">
+        Entre ton prénom/nom et choisis le professeur que tu souhaites évaluer.
+        Tes réponses aident l'école à s'améliorer.
+      </p>
+
+      <div id="config-warning" class="alert alert-error" hidden>
+        L'application n'est pas encore configurée : renseignez
+        <code>SUPABASE_URL</code> et <code>SUPABASE_ANON_KEY</code>
+        dans <code>assets/config.js</code>.
+      </div>
+
+      <div id="load-error" class="alert alert-error" hidden></div>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="student-name">Ton nom</label>
+          <input
+            type="text"
+            id="student-name"
+            name="student-name"
+            maxlength="80"
+            required
+            autocomplete="name"
+            placeholder="ex : Jules Martin"
+          />
+        </div>
+
+        <div class="field">
+          <label for="teacher-select">Professeur à évaluer</label>
+          <select id="teacher-select" name="teacher-select" required disabled>
+            <option value="">Chargement des professeurs…</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submit-btn" disabled>
+            Commencer l'évaluation →
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <p class="hint" style="text-align:center;">
+      Tu veux juste consulter les résultats ? <a href="dashboard.html">Voir le dashboard</a>
+    </p>
+  </main>
+
+  <footer class="site-footer">Application interne — évaluation des professeurs</footer>
+
+  <script type="module" src="assets/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Évaluer un professeur</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="logo">🎓</span> Évaluation des profs</a>
+    <nav class="site-nav">
+      <a href="index.html" class="active">Évaluer</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1 id="page-title">Évaluation</h1>
+      <p class="subtitle" id="page-subtitle"></p>
+
+      <div id="alert-box"></div>
+
+      <form id="eval-form">
+        <div id="criteria-container"></div>
+
+        <div class="field">
+          <label for="comment">Commentaire libre (facultatif)</label>
+          <textarea
+            id="comment"
+            name="comment"
+            maxlength="1000"
+            placeholder="Ce que tu apprécies, ce qui pourrait être amélioré…"
+          ></textarea>
+          <p class="hint"><span id="comment-count">0</span>/1000 caractères</p>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submit-btn">Envoyer l'évaluation</button>
+          <a href="index.html" class="btn btn-secondary">Changer de professeur</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">Application interne — évaluation des professeurs</footer>
+
+  <script type="module" src="assets/evaluer.js"></script>
+</body>
+</html>

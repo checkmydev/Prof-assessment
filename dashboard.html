@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Évaluation des professeurs</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="logo">🎓</span> Évaluation des profs</a>
+    <nav class="site-nav">
+      <a href="index.html">Évaluer</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="wide">
+    <h1>Dashboard des résultats</h1>
+    <p class="subtitle">Moyennes obtenues par chaque professeur, tous critères confondus.</p>
+
+    <div id="config-warning" class="alert alert-error" hidden>
+      L'application n'est pas encore configurée : renseignez
+      <code>SUPABASE_URL</code> et <code>SUPABASE_ANON_KEY</code>
+      dans <code>assets/config.js</code>.
+    </div>
+
+    <div id="load-error" class="alert alert-error" hidden></div>
+
+    <div class="toolbar">
+      <div class="field" style="margin-bottom:0;">
+        <label for="sort-select">Trier par</label>
+        <select id="sort-select">
+          <option value="overall-desc">Moyenne générale (décroissant)</option>
+          <option value="overall-asc">Moyenne générale (croissant)</option>
+          <option value="name">Nom du professeur</option>
+          <option value="count-desc">Nombre d'évaluations</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="loading" class="skeleton">Chargement des résultats…</div>
+    <div id="teacher-grid" class="teacher-grid"></div>
+    <div id="empty-state" class="empty-state" hidden>
+      Aucun professeur enregistré pour le moment.
+    </div>
+  </main>
+
+  <footer class="site-footer">Application interne — évaluation des professeurs</footer>
+
+  <script type="module" src="assets/dashboard.js"></script>
+</body>
+</html>
