@@ -1,6 +1,9 @@
 import { supabase, isConfigured } from './supabaseClient.js';
 import { CRITERIA } from './criteria.js';
+import { escapeHtml } from './dom.js';
+import { avatarImgHtml } from './avatar.js';
 
+const evalHeader = document.getElementById('eval-header');
 const pageSubtitle = document.getElementById('page-subtitle');
 const alertBox = document.getElementById('alert-box');
 const form = document.getElementById('eval-form');
@@ -12,6 +15,8 @@ const submitBtn = document.getElementById('submit-btn');
 const studentName = sessionStorage.getItem('studentName');
 const teacherId = sessionStorage.getItem('teacherId');
 const teacherLabel = sessionStorage.getItem('teacherLabel') || 'ce professeur';
+const teacherName = sessionStorage.getItem('teacherName') || teacherLabel;
+const teacherPhoto = sessionStorage.getItem('teacherPhoto') || '';
 
 if (!isConfigured) {
   showAlert(
@@ -22,6 +27,7 @@ if (!isConfigured) {
 } else if (!studentName || !teacherId) {
   window.location.href = 'index.html';
 } else {
+  evalHeader.innerHTML = avatarImgHtml(teacherName, teacherPhoto, 'avatar avatar-lg');
   pageSubtitle.innerHTML = `Élève : <strong>${escapeHtml(studentName)}</strong> — Professeur : <strong>${escapeHtml(
     teacherLabel
   )}</strong>`;
@@ -54,12 +60,6 @@ function renderCriteria() {
 commentInput.addEventListener('input', () => {
   commentCount.textContent = String(commentInput.value.length);
 });
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
 
 function showAlert(type, message) {
   const cls = type === 'error' ? 'alert-error' : type === 'success' ? 'alert-success' : 'alert-info';

@@ -46,10 +46,15 @@
         </div>
 
         <div class="field">
-          <label for="teacher-select">Professeur à évaluer</label>
-          <select id="teacher-select" name="teacher-select" required disabled>
-            <option value="">Chargement des professeurs…</option>
-          </select>
+          <span class="label-text">Professeur à évaluer</span>
+          <div
+            id="teacher-picker"
+            class="teacher-picker"
+            role="radiogroup"
+            aria-label="Choisir un professeur"
+          >
+            <p class="hint">Chargement des professeurs…</p>
+          </div>
         </div>
 
         <div class="actions">

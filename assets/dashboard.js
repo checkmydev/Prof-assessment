@@ -1,5 +1,7 @@
 import { supabase, isConfigured } from './supabaseClient.js';
 import { CRITERIA } from './criteria.js';
+import { escapeHtml } from './dom.js';
+import { avatarImgHtml } from './avatar.js';
 
 const configWarning = document.getElementById('config-warning');
 const loadError = document.getElementById('load-error');
@@ -9,12 +11,6 @@ const emptyState = document.getElementById('empty-state');
 const sortSelect = document.getElementById('sort-select');
 
 let stats = [];
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str ?? '';
-  return div.innerHTML;
-}
 
 function starDisplay(avg) {
   const clamped = Math.max(0, Math.min(5, avg || 0));
@@ -48,9 +44,12 @@ function renderTeacherCard(row) {
   return `
     <article class="teacher-card">
       <div class="teacher-card-head">
-        <div>
-          <h3>${escapeHtml(row.teacher_name)}</h3>
-          ${row.subject ? `<div class="subject">${escapeHtml(row.subject)}</div>` : ''}
+        <div class="teacher-card-identity">
+          ${avatarImgHtml(row.teacher_name, row.photo_url, 'avatar')}
+          <div>
+            <h3>${escapeHtml(row.teacher_name)}</h3>
+            ${row.subject ? `<div class="subject">${escapeHtml(row.subject)}</div>` : ''}
+          </div>
         </div>
         <div class="overall-score">
           ${

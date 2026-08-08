@@ -120,7 +120,8 @@ p.subtitle {
   margin-bottom: 1.5rem;
 }
 
-label {
+label,
+.label-text {
   display: block;
   font-weight: 600;
   margin-bottom: 0.4rem;
@@ -210,6 +211,88 @@ button:disabled {
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 1.5rem;
+}
+
+/* --- Avatars --- */
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--color-bg);
+}
+
+.avatar-lg {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 0.75rem;
+}
+
+.eval-header {
+  text-align: center;
+}
+
+.eval-header:empty {
+  display: none;
+}
+
+/* --- Teacher picker (login page) --- */
+.teacher-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.teacher-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.4rem;
+  padding: 1rem 0.75rem;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: normal;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.teacher-option:hover {
+  border-color: var(--color-primary);
+}
+
+.teacher-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.teacher-option input:checked ~ .avatar {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.teacher-option:has(input:checked) {
+  border-color: var(--color-primary);
+  background: #eef1fb;
+}
+
+.teacher-option .avatar {
+  width: 56px;
+  height: 56px;
+}
+
+.teacher-option-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.teacher-option-subject {
+  color: var(--color-muted);
+  font-size: 0.78rem;
 }
 
 .alert {
@@ -330,6 +413,13 @@ button:disabled {
   align-items: flex-start;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
+}
+
+.teacher-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .teacher-card-head h3 {
