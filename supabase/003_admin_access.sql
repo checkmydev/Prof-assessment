@@ -16,24 +16,23 @@
 --   connexion, jamais d'inscription — mais mieux vaut fermer la porte aussi
 --   côté Supabase).
 --
--- Remplacez ADMIN_EMAIL_ICI ci-dessous par l'email exact que vous venez de
--- créer, puis exécutez ce script.
+-- Compte admin : arthurstims@gmail.com
 -- ============================================================================
 
 drop policy if exists "admin_insert_teachers" on teachers;
 create policy "admin_insert_teachers"
   on teachers for insert
-  with check ((auth.jwt() ->> 'email') = 'ADMIN_EMAIL_ICI');
+  with check ((auth.jwt() ->> 'email') = 'arthurstims@gmail.com');
 
 drop policy if exists "admin_update_teachers" on teachers;
 create policy "admin_update_teachers"
   on teachers for update
-  using ((auth.jwt() ->> 'email') = 'ADMIN_EMAIL_ICI')
-  with check ((auth.jwt() ->> 'email') = 'ADMIN_EMAIL_ICI');
+  using ((auth.jwt() ->> 'email') = 'arthurstims@gmail.com')
+  with check ((auth.jwt() ->> 'email') = 'arthurstims@gmail.com');
 
 drop policy if exists "admin_delete_teachers" on teachers;
 create policy "admin_delete_teachers"
   on teachers for delete
-  using ((auth.jwt() ->> 'email') = 'ADMIN_EMAIL_ICI');
+  using ((auth.jwt() ->> 'email') = 'arthurstims@gmail.com');
 
 grant insert, update, delete on teachers to authenticated;
