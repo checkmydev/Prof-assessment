@@ -34,7 +34,7 @@ async function init() {
 
   const { data, error } = await supabase
     .from('teachers')
-    .select('id, name, subject')
+    .select('*')
     .order('name', { ascending: true });
 
   if (error) {
@@ -57,7 +57,7 @@ async function init() {
           <input type="radio" name="teacher-id" value="${t.id}" required ${
             index === 0 ? 'data-first' : ''
           } />
-          ${avatarImgHtml(t.name, 'avatar')}
+          ${avatarImgHtml(t.name, t.avatar_key, 'avatar')}
           <span class="teacher-option-name">${escapeHtml(t.name)}</span>
           ${t.subject ? `<span class="teacher-option-subject">${escapeHtml(t.subject)}</span>` : ''}
         </label>
@@ -87,6 +87,7 @@ form.addEventListener('submit', (event) => {
     teacher.name + (teacher.subject ? ' — ' + teacher.subject : '')
   );
   sessionStorage.setItem('teacherName', teacher.name);
+  sessionStorage.setItem('teacherAvatar', teacher.avatar_key || '');
 
   window.location.href = 'evaluer.html';
 });

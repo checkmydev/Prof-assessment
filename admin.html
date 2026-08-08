@@ -69,7 +69,10 @@
             <label for="teacher-subject">Matière (facultatif)</label>
             <input type="text" id="teacher-subject" maxlength="80" placeholder="ex : Mathématiques" />
           </div>
-          <p class="hint">Un avatar coloré avec les initiales est généré automatiquement, pas besoin de photo.</p>
+          <div class="field">
+            <span class="label-text">Avatar</span>
+            <div id="avatar-picker" class="avatar-picker" role="radiogroup" aria-label="Choisir un avatar"></div>
+          </div>
           <div class="actions">
             <button type="submit" class="btn-primary" id="add-btn">Ajouter</button>
           </div>

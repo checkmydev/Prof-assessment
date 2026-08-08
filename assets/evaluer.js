@@ -16,6 +16,7 @@ const studentName = sessionStorage.getItem('studentName');
 const teacherId = sessionStorage.getItem('teacherId');
 const teacherLabel = sessionStorage.getItem('teacherLabel') || 'ce professeur';
 const teacherName = sessionStorage.getItem('teacherName') || teacherLabel;
+const teacherAvatar = sessionStorage.getItem('teacherAvatar') || '';
 
 if (!isConfigured) {
   showAlert(
@@ -26,7 +27,7 @@ if (!isConfigured) {
 } else if (!studentName || !teacherId) {
   window.location.href = 'index.html';
 } else {
-  evalHeader.innerHTML = avatarImgHtml(teacherName, 'avatar avatar-lg');
+  evalHeader.innerHTML = avatarImgHtml(teacherName, teacherAvatar, 'avatar avatar-lg');
   pageSubtitle.innerHTML = `Élève : <strong>${escapeHtml(studentName)}</strong> — Professeur : <strong>${escapeHtml(
     teacherLabel
   )}</strong>`;

@@ -12,6 +12,9 @@ create table if not exists teachers (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   subject text,
+  -- Clé d'un avatar prédéfini (voir assets/avatar.js) — pas une URL de photo.
+  -- Si vide, un avatar avec les initiales du professeur est généré à la volée.
+  avatar_key text,
   created_at timestamptz not null default now()
 );
 
@@ -49,6 +52,7 @@ select
   t.id as teacher_id,
   t.name as teacher_name,
   t.subject,
+  t.avatar_key,
   count(e.id) as total_evaluations,
   round(avg(e.rating_clarity)::numeric, 2) as avg_clarity,
   round(avg(e.rating_availability)::numeric, 2) as avg_availability,
@@ -67,7 +71,7 @@ select
   ) as avg_overall
 from teachers t
 left join evaluations e on e.teacher_id = t.id
-group by t.id, t.name, t.subject;
+group by t.id, t.name, t.subject, t.avatar_key;
 
 -- ----------------------------------------------------------------------------
 -- Row Level Security
@@ -96,10 +100,12 @@ grant select on teacher_stats to anon, authenticated;
 -- ----------------------------------------------------------------------------
 -- Données d'exemple (facultatif : à adapter avec les vrais professeurs)
 -- ----------------------------------------------------------------------------
--- insert into teachers (name, subject) values
---   ('Mme Dubois', 'Mathématiques'),
---   ('M. Lefèvre', 'Français'),
---   ('Mme Alaoui', 'Sciences');
+-- insert into teachers (name, subject, avatar_key) values
+--   ('Mme Dubois', 'Mathématiques', 'owl'),
+--   ('M. Lefèvre', 'Français', 'fox'),
+--   ('Mme Alaoui', 'Sciences', 'dolphin');
 --
--- L'application génère automatiquement un avatar (initiales + couleur) pour
--- chaque professeur : aucune photo à fournir ni à stocker en base.
+-- "avatar_key" est facultatif et correspond à un avatar prédéfini choisi
+-- dans /admin.html (voir la liste AVATAR_PRESETS dans assets/avatar.js) ;
+-- sans valeur, un avatar avec les initiales du professeur est généré à la
+-- volée. Ce n'est jamais une URL de photo.

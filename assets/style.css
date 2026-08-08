@@ -295,6 +295,41 @@ button:disabled {
   font-size: 0.78rem;
 }
 
+/* --- Avatar picker (admin page) --- */
+.avatar-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 0.5rem;
+  max-width: 420px;
+}
+
+.avatar-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.avatar-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.avatar-option:has(input:checked) {
+  border-color: var(--color-primary);
+}
+
+.avatar-option .avatar {
+  width: 48px;
+  height: 48px;
+}
+
 .alert {
   border-radius: 10px;
   padding: 0.9rem 1.1rem;

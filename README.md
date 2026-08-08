@@ -53,6 +53,12 @@ librement :
 3. Récupérez `Project URL` et la clé `anon public` dans **Project Settings →
    API**.
 
+   > Si votre base a été créée avant l'ajout de la galerie d'avatars,
+   > exécutez aussi [`supabase/002_add_teacher_avatar.sql`](supabase/002_add_teacher_avatar.sql)
+   > (inutile sur une base toute neuve : `schema.sql` inclut déjà la colonne).
+   > Tant que ce n'est pas fait, l'app fonctionne quand même — elle affiche
+   > un avatar avec les initiales du professeur en attendant.
+
 ### 1bis. Activer la page d'administration (`admin.html`)
 
 Par défaut, personne (ni les élèves, ni un visiteur) ne peut ajouter ou
@@ -71,8 +77,8 @@ gérer les professeurs depuis `/admin.html` plutôt que depuis Supabase :
    Cela autorise uniquement ce compte à ajouter/modifier/supprimer des
    professeurs.
 4. Rendez-vous sur `/admin.html`, connectez-vous, et ajoutez vos professeurs
-   (nom + matière facultative). Un avatar (initiales + couleur) est généré
-   automatiquement pour chacun : aucune photo à fournir.
+   (nom, matière facultative, avatar à choisir dans la galerie prédéfinie —
+   jamais de photo/URL à fournir).
 
 Pour démarrer rapidement avec des professeurs de test, vous pouvez aussi
 exécuter [`supabase/004_seed_initial_teachers.sql`](supabase/004_seed_initial_teachers.sql).
@@ -125,7 +131,7 @@ python3 -m http.server 8080
   l'email scolaire).
 - `admin.html` permet d'ajouter et de supprimer des professeurs, mais pas
   encore de modifier un professeur existant (renommer, changer la matière ou
-  la photo) — cela se fait pour l'instant via Supabase (Table Editor ou SQL).
+  l'avatar) — cela se fait pour l'instant via Supabase (Table Editor ou SQL).
 - L'accès admin repose sur un unique compte Supabase Auth autorisé par email
   dans les policies RLS ; pour plusieurs administrateurs, on pourrait
   utiliser une table `admins` plutôt qu'un email en dur dans le SQL.

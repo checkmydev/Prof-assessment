@@ -1,6 +1,6 @@
 import { supabase, isConfigured } from './supabaseClient.js';
 import { escapeHtml } from './dom.js';
-import { avatarImgHtml } from './avatar.js';
+import { avatarImgHtml, avatarPickerHtml } from './avatar.js';
 
 const configWarning = document.getElementById('config-warning');
 const loginCard = document.getElementById('login-card');
@@ -17,6 +17,9 @@ const addBtn = document.getElementById('add-btn');
 const formAlert = document.getElementById('form-alert');
 const nameInput = document.getElementById('teacher-name');
 const subjectInput = document.getElementById('teacher-subject');
+const avatarPicker = document.getElementById('avatar-picker');
+
+avatarPicker.innerHTML = avatarPickerHtml('avatar-key');
 
 const listAlert = document.getElementById('list-alert');
 const listLoading = document.getElementById('teacher-list-loading');
@@ -47,7 +50,7 @@ async function loadTeachers() {
 
   const { data, error } = await supabase
     .from('teachers')
-    .select('id, name, subject')
+    .select('*')
     .order('name', { ascending: true });
 
   listLoading.hidden = true;
@@ -66,7 +69,7 @@ async function loadTeachers() {
     .map(
       (t) => `
         <li class="admin-teacher-row" data-id="${t.id}">
-          ${avatarImgHtml(t.name, 'avatar')}
+          ${avatarImgHtml(t.name, t.avatar_key, 'avatar')}
           <div class="admin-teacher-info">
             <div class="admin-teacher-name">${escapeHtml(t.name)}</div>
             ${t.subject ? `<div class="subject">${escapeHtml(t.subject)}</div>` : ''}
@@ -106,6 +109,7 @@ addForm.addEventListener('submit', async (event) => {
 
   const name = nameInput.value.trim();
   const subject = subjectInput.value.trim();
+  const avatarKey = avatarPicker.querySelector('input[name="avatar-key"]:checked')?.value;
 
   if (!name) return;
 
@@ -115,6 +119,7 @@ addForm.addEventListener('submit', async (event) => {
   const { error } = await supabase.from('teachers').insert({
     name,
     subject: subject || null,
+    avatar_key: avatarKey || null,
   });
 
   addBtn.disabled = false;
@@ -124,7 +129,9 @@ addForm.addEventListener('submit', async (event) => {
     showAlert(
       formAlert,
       'error',
-      "Impossible d'ajouter ce professeur. Vérifie que ton compte a bien les droits d'administration (voir supabase/003_admin_access.sql)."
+      error.code === '42703'
+        ? "Il manque la colonne avatar_key en base : exécute supabase/002_add_teacher_avatar.sql dans Supabase, puis réessaie."
+        : "Impossible d'ajouter ce professeur. Vérifie que ton compte a bien les droits d'administration (voir supabase/003_admin_access.sql)."
     );
     return;
   }
