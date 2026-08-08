@@ -20,6 +20,8 @@ professeur.
    dans la table `evaluations`.
 3. **`dashboard.html`** — Affiche, pour chaque professeur, la moyenne
    générale et la moyenne par critère, calculées côté base de données.
+4. **`admin.html`** — Page protégée par mot de passe (Supabase Auth) pour
+   ajouter ou supprimer des professeurs, sans passer par Supabase.
 
 ### Critères d'évaluation
 
@@ -48,11 +50,36 @@ librement :
      la liste des professeurs, insérer une évaluation et lire les moyennes
      agrégées, mais **ne peut pas** lire les évaluations brutes (noms
      d'élèves, commentaires) — ces informations restent privées.
-3. Ajoutez vos professeurs, soit via **Table Editor → teachers**, soit en
-   adaptant le bloc `insert into teachers (...)` (commenté) en bas du fichier
-   SQL.
-4. Récupérez `Project URL` et la clé `anon public` dans **Project Settings →
+
+   > Si votre base a été créée avant l'ajout des photos de profs, exécutez
+   > aussi [`supabase/002_add_teacher_photos.sql`](supabase/002_add_teacher_photos.sql)
+   > (inutile sur une base toute neuve : `schema.sql` inclut déjà la colonne).
+3. Récupérez `Project URL` et la clé `anon public` dans **Project Settings →
    API**.
+
+### 1bis. Activer la page d'administration (`admin.html`)
+
+Par défaut, personne (ni les élèves, ni un visiteur) ne peut ajouter ou
+supprimer un professeur — la table `teachers` n'accepte que la lecture. Pour
+gérer les professeurs depuis `/admin.html` plutôt que depuis Supabase :
+
+1. **Authentication → Users → Add user** : créez un compte avec l'email et le
+   mot de passe que vous utiliserez pour vous connecter sur `/admin.html`, en
+   cochant **Auto Confirm User**.
+2. **Authentication → Providers → Email** : décochez **Allow new users to
+   sign up** (la page n'a de toute façon pas de formulaire d'inscription,
+   mais autant fermer la porte côté Supabase aussi).
+3. Dans **SQL Editor**, ouvrez
+   [`supabase/003_admin_access.sql`](supabase/003_admin_access.sql),
+   remplacez `ADMIN_EMAIL_ICI` par l'email créé à l'étape 1, puis exécutez-le.
+   Cela autorise uniquement ce compte à ajouter/modifier/supprimer des
+   professeurs.
+4. Rendez-vous sur `/admin.html`, connectez-vous, et ajoutez vos professeurs
+   (nom, matière facultative, photo facultative — sans photo, un avatar avec
+   les initiales est généré automatiquement).
+
+Pour démarrer rapidement avec des professeurs de test, vous pouvez aussi
+exécuter [`supabase/004_seed_initial_teachers.sql`](supabase/004_seed_initial_teachers.sql).
 
 ### 2. Configurer le frontend
 
@@ -100,6 +127,9 @@ python3 -m http.server 8080
   passer pour un autre. Pour une identification plus robuste, on pourrait
   brancher [Supabase Auth](https://supabase.com/docs/guides/auth) (ex. via
   l'email scolaire).
-- La gestion des professeurs (ajout/suppression) se fait actuellement dans
-  le Table Editor de Supabase ; une page d'administration dédiée pourrait
-  être ajoutée si besoin.
+- `admin.html` permet d'ajouter et de supprimer des professeurs, mais pas
+  encore de modifier un professeur existant (renommer, changer la matière ou
+  la photo) — cela se fait pour l'instant via Supabase (Table Editor ou SQL).
+- L'accès admin repose sur un unique compte Supabase Auth autorisé par email
+  dans les policies RLS ; pour plusieurs administrateurs, on pourrait
+  utiliser une table `admins` plutôt qu'un email en dur dans le SQL.

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Administration — Évaluation des professeurs</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="logo">🎓</span> Évaluation des profs</a>
+    <nav class="site-nav">
+      <a href="index.html">Évaluer</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="config-warning" class="alert alert-error" hidden>
+      L'application n'est pas encore configurée : renseignez
+      <code>SUPABASE_URL</code> et <code>SUPABASE_ANON_KEY</code>
+      dans <code>assets/config.js</code>.
+    </div>
+
+    <!-- Formulaire de connexion -->
+    <div class="card" id="login-card" hidden>
+      <h1>Administration</h1>
+      <p class="subtitle">Connectez-vous pour gérer la liste des professeurs.</p>
+
+      <div id="login-error" class="alert alert-error" hidden></div>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="admin-email">Email</label>
+          <input type="text" id="admin-email" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="admin-password">Mot de passe</label>
+          <input type="password" id="admin-password" autocomplete="current-password" required />
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="login-btn">Se connecter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Espace admin (visible une fois connecté) -->
+    <div id="admin-area" hidden>
+      <div class="card">
+        <div class="toolbar" style="margin-bottom:0;">
+          <div>
+            <h1 style="margin-bottom:0.2rem;">Gestion des professeurs</h1>
+            <p class="subtitle" style="margin-bottom:0;">Connecté en tant que <strong id="admin-email-label"></strong></p>
+          </div>
+          <button type="button" class="btn-secondary" id="logout-btn">Se déconnecter</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ajouter un professeur</h2>
+        <div id="form-alert"></div>
+        <form id="add-teacher-form">
+          <div class="field">
+            <label for="teacher-name">Nom</label>
+            <input type="text" id="teacher-name" maxlength="80" required placeholder="ex : Mme Dubois" />
+          </div>
+          <div class="field">
+            <label for="teacher-subject">Matière (facultatif)</label>
+            <input type="text" id="teacher-subject" maxlength="80" placeholder="ex : Mathématiques" />
+          </div>
+          <div class="field">
+            <label for="teacher-photo">URL de la photo (facultatif)</label>
+            <input type="text" id="teacher-photo" placeholder="https://…" />
+            <p class="hint">Laissez vide : un avatar avec les initiales sera généré automatiquement.</p>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn-primary" id="add-btn">Ajouter</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Professeurs enregistrés</h2>
+        <div id="list-alert"></div>
+        <div id="teacher-list-loading" class="skeleton">Chargement…</div>
+        <ul id="teacher-list" class="admin-teacher-list"></ul>
+        <p class="empty-state" id="teacher-list-empty" hidden>Aucun professeur pour le moment.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Application interne — évaluation des professeurs</footer>
+
+  <script type="module" src="assets/admin.js"></script>
+</body>
+</html>
