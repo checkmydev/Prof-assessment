@@ -396,14 +396,23 @@ button:disabled {
   transition: color 0.1s ease;
 }
 
-.star-rating label:hover,
-.star-rating label:hover ~ label,
 .star-rating input:checked ~ label {
   color: var(--color-star);
 }
 
-.star-rating:hover input:checked ~ label {
-  color: var(--color-star-empty);
+/* Aperçu au survol : uniquement sur les appareils avec une vraie souris.
+   Sur tactile, :hover reste parfois "collé" après un tap, ce qui masquait
+   l'étoile tout juste sélectionnée jusqu'au tap suivant — donc pas de survol
+   du tout sur mobile, seul l'état "coché" ci-dessus décide de la couleur. */
+@media (hover: hover) and (pointer: fine) {
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: var(--color-star);
+  }
+
+  .star-rating:hover input:checked ~ label {
+    color: var(--color-star-empty);
+  }
 }
 
 /* --- Star display (read-only, dashboard) --- */
