@@ -18,9 +18,9 @@ function colorForName(name) {
   return PALETTE[Math.abs(hash) % PALETTE.length];
 }
 
-// Avatar généré localement (SVG en data URI) : utilisé quand le professeur
-// n'a pas de photo, ou si l'image renseignée ne charge pas.
-export function fallbackAvatarUrl(name) {
+// Avatar généré entièrement côté client (SVG en data URI, couleur + initiales
+// dérivées du nom) : aucune photo à héberger ni à stocker en base.
+function avatarDataUrl(name) {
   const label = initials(name);
   const color = colorForName(name);
   const svg =
@@ -32,10 +32,8 @@ export function fallbackAvatarUrl(name) {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
-export function avatarImgHtml(name, photoUrl, className = 'avatar') {
-  const fallback = fallbackAvatarUrl(name);
-  const src = photoUrl || fallback;
-  return `<img class="${className}" src="${escapeHtml(src)}" alt="Photo de ${escapeHtml(
+export function avatarImgHtml(name, className = 'avatar') {
+  return `<img class="${className}" src="${avatarDataUrl(name)}" alt="Avatar de ${escapeHtml(
     name
-  )}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}';" />`;
+  )}" loading="lazy" />`;
 }

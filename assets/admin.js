@@ -17,7 +17,6 @@ const addBtn = document.getElementById('add-btn');
 const formAlert = document.getElementById('form-alert');
 const nameInput = document.getElementById('teacher-name');
 const subjectInput = document.getElementById('teacher-subject');
-const photoInput = document.getElementById('teacher-photo');
 
 const listAlert = document.getElementById('list-alert');
 const listLoading = document.getElementById('teacher-list-loading');
@@ -48,7 +47,7 @@ async function loadTeachers() {
 
   const { data, error } = await supabase
     .from('teachers')
-    .select('id, name, subject, photo_url')
+    .select('id, name, subject')
     .order('name', { ascending: true });
 
   listLoading.hidden = true;
@@ -67,7 +66,7 @@ async function loadTeachers() {
     .map(
       (t) => `
         <li class="admin-teacher-row" data-id="${t.id}">
-          ${avatarImgHtml(t.name, t.photo_url, 'avatar')}
+          ${avatarImgHtml(t.name, 'avatar')}
           <div class="admin-teacher-info">
             <div class="admin-teacher-name">${escapeHtml(t.name)}</div>
             ${t.subject ? `<div class="subject">${escapeHtml(t.subject)}</div>` : ''}
@@ -107,7 +106,6 @@ addForm.addEventListener('submit', async (event) => {
 
   const name = nameInput.value.trim();
   const subject = subjectInput.value.trim();
-  const photoUrl = photoInput.value.trim();
 
   if (!name) return;
 
@@ -117,7 +115,6 @@ addForm.addEventListener('submit', async (event) => {
   const { error } = await supabase.from('teachers').insert({
     name,
     subject: subject || null,
-    photo_url: photoUrl || null,
   });
 
   addBtn.disabled = false;

@@ -12,7 +12,6 @@ create table if not exists teachers (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   subject text,
-  photo_url text,
   created_at timestamptz not null default now()
 );
 
@@ -50,7 +49,6 @@ select
   t.id as teacher_id,
   t.name as teacher_name,
   t.subject,
-  t.photo_url,
   count(e.id) as total_evaluations,
   round(avg(e.rating_clarity)::numeric, 2) as avg_clarity,
   round(avg(e.rating_availability)::numeric, 2) as avg_availability,
@@ -69,7 +67,7 @@ select
   ) as avg_overall
 from teachers t
 left join evaluations e on e.teacher_id = t.id
-group by t.id, t.name, t.subject, t.photo_url;
+group by t.id, t.name, t.subject;
 
 -- ----------------------------------------------------------------------------
 -- Row Level Security
@@ -98,10 +96,10 @@ grant select on teacher_stats to anon, authenticated;
 -- ----------------------------------------------------------------------------
 -- Données d'exemple (facultatif : à adapter avec les vrais professeurs)
 -- ----------------------------------------------------------------------------
--- insert into teachers (name, subject, photo_url) values
---   ('Mme Dubois', 'Mathématiques', 'https://api.dicebear.com/9.x/initials/svg?seed=Mme%20Dubois'),
---   ('M. Lefèvre', 'Français', 'https://api.dicebear.com/9.x/initials/svg?seed=M.%20Lefevre'),
---   ('Mme Alaoui', 'Sciences', 'https://api.dicebear.com/9.x/initials/svg?seed=Mme%20Alaoui');
+-- insert into teachers (name, subject) values
+--   ('Mme Dubois', 'Mathématiques'),
+--   ('M. Lefèvre', 'Français'),
+--   ('Mme Alaoui', 'Sciences');
 --
--- "photo_url" est facultatif : si vide, l'application affiche automatiquement
--- un avatar généré à partir des initiales du professeur.
+-- L'application génère automatiquement un avatar (initiales + couleur) pour
+-- chaque professeur : aucune photo à fournir ni à stocker en base.

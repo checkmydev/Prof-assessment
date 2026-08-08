@@ -50,10 +50,6 @@ librement :
      la liste des professeurs, insérer une évaluation et lire les moyennes
      agrégées, mais **ne peut pas** lire les évaluations brutes (noms
      d'élèves, commentaires) — ces informations restent privées.
-
-   > Si votre base a été créée avant l'ajout des photos de profs, exécutez
-   > aussi [`supabase/002_add_teacher_photos.sql`](supabase/002_add_teacher_photos.sql)
-   > (inutile sur une base toute neuve : `schema.sql` inclut déjà la colonne).
 3. Récupérez `Project URL` et la clé `anon public` dans **Project Settings →
    API**.
 
@@ -75,8 +71,8 @@ gérer les professeurs depuis `/admin.html` plutôt que depuis Supabase :
    Cela autorise uniquement ce compte à ajouter/modifier/supprimer des
    professeurs.
 4. Rendez-vous sur `/admin.html`, connectez-vous, et ajoutez vos professeurs
-   (nom, matière facultative, photo facultative — sans photo, un avatar avec
-   les initiales est généré automatiquement).
+   (nom + matière facultative). Un avatar (initiales + couleur) est généré
+   automatiquement pour chacun : aucune photo à fournir.
 
 Pour démarrer rapidement avec des professeurs de test, vous pouvez aussi
 exécuter [`supabase/004_seed_initial_teachers.sql`](supabase/004_seed_initial_teachers.sql).

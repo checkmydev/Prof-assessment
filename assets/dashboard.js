@@ -45,7 +45,7 @@ function renderTeacherCard(row) {
     <article class="teacher-card">
       <div class="teacher-card-head">
         <div class="teacher-card-identity">
-          ${avatarImgHtml(row.teacher_name, row.photo_url, 'avatar')}
+          ${avatarImgHtml(row.teacher_name, 'avatar')}
           <div>
             <h3>${escapeHtml(row.teacher_name)}</h3>
             ${row.subject ? `<div class="subject">${escapeHtml(row.subject)}</div>` : ''}
