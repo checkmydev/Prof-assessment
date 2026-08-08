@@ -111,6 +111,27 @@ qui publie automatiquement le contenu du dépôt à chaque push sur `main`.
 Aucune étape de build n'est nécessaire : le site est composé de fichiers
 statiques servis tels quels.
 
+### Application installable (PWA) + fraîcheur du cache sur mobile
+
+Le site inclut un [`manifest.webmanifest`](manifest.webmanifest) et un
+service worker minimal ([`sw.js`](sw.js)), ce qui permet de l'installer comme
+une app (Android Chrome : menu → *Installer l'application* / *Ajouter à
+l'écran d'accueil* ; iOS Safari : bouton Partager → *Sur l'écran d'accueil*).
+
+Si une ancienne version restait affichée sur mobile après une mise à jour,
+c'est le navigateur qui gardait `assets/*.js`/`*.css` en cache — ces fichiers
+gardent toujours le même nom, donc rien ne signalait au téléphone qu'il
+fallait les re-télécharger. Le workflow de déploiement
+([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml))
+ajoute maintenant automatiquement `?v=<commit>` à chaque référence locale
+(CSS, JS, imports entre modules) à chaque déploiement, ce qui force le
+navigateur à recharger la bonne version. Le service worker lui-même est
+volontairement "network-first" (toujours le réseau en priorité, le cache
+sert uniquement de secours hors-ligne) pour ne pas réintroduire ce genre de
+souci. Si un appareil affiche encore une ancienne version après ce
+changement, un rechargement forcé (ou dé-installer/réinstaller l'app) suffit
+à repartir sur une base saine.
+
 ## Tester en local
 
 Comme les pages utilisent des modules ES (`type="module"`), elles doivent

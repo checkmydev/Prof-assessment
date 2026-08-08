@@ -27,6 +27,35 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Cache-bust local CSS/JS references
+        # Sans ça, les navigateurs (surtout mobile) peuvent continuer à
+        # servir une version en cache de assets/*.js|css après un déploiement,
+        # puisque ces fichiers gardent toujours le même nom/URL.
+        run: |
+          python3 - <<'PYEOF'
+          import re
+          import subprocess
+          import pathlib
+
+          version = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
+
+          html_pattern = re.compile(r'((?:href|src)=")(assets/[^"?]+\.(?:css|js))(")')
+          js_import_pattern = re.compile(r"(from '\./)([A-Za-z0-9_.-]+\.js)(')")
+
+          def bust(pattern, text):
+              return pattern.sub(lambda m: f'{m.group(1)}{m.group(2)}?v={version}{m.group(3)}', text)
+
+          for path in pathlib.Path('.').glob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              path.write_text(bust(html_pattern, text), encoding='utf-8')
+
+          for path in pathlib.Path('assets').glob('*.js'):
+              text = path.read_text(encoding='utf-8')
+              path.write_text(bust(js_import_pattern, text), encoding='utf-8')
+
+          print(f'Cache-busted with version {version}')
+          PYEOF
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
